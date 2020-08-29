@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class MovieController {
@@ -17,7 +18,7 @@ public class MovieController {
     }
 
     @RequestMapping("/api/movies/{id}")
-    public Movie getMovie(@PathVariable String id) {
+    public Optional<Movie> getMovie(@PathVariable String id) {
         return movieService.getMovie(id);
     }
 
@@ -29,6 +30,11 @@ public class MovieController {
     @RequestMapping(method = RequestMethod.PUT, value = "/api/movies/{id}")
     public void updateMovie(@RequestBody Movie movie, @PathVariable String id) {
         movieService.updateMovie(id, movie);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/api/movies/{id}")
+    public void deleteMovie(@PathVariable String id) {
+        movieService.deleteMovie(id);
     }
 
 }

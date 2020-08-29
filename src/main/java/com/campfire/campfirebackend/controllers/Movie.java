@@ -1,7 +1,12 @@
 package com.campfire.campfirebackend.controllers;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Movie {
 
+    @Id
     private String id;
     private String title;
     private int year;
