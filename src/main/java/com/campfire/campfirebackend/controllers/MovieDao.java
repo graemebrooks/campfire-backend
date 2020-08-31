@@ -32,6 +32,16 @@ public class MovieDao {
                 movie.getDirector());
     }
 
+    public void updateMovie(String id, Movie movie) {
+        String sql = "UPDATE movie SET title = ?, year = ?, director = ? WHERE id = ?";
+        jdbcTemplate.update(sql, movie.getTitle(), movie.getYear(), movie.getDirector(), id);
+    }
+
+    public void deleteMovie(String id) {
+        String sql = "DELETE FROM movie WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
 
     static class movieMapper implements RowMapper<Movie> {
         @Override

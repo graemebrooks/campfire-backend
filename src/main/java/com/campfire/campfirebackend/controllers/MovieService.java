@@ -25,20 +25,15 @@ public class MovieService {
         return Optional.ofNullable(movieDao.getMovie(id));
     }
 
-    public String getMovieName(String id) {
-        Optional<Movie> movie = movieRepository.findById(id);
-        return movie.map(Movie::getTitle).orElse(null);
-    }
-
     public void addMovie(Movie movie) {
         movieDao.addMovie(movie);
     }
 
     public void updateMovie(String id, Movie movie) {
-        movieRepository.save(movie);
+        movieDao.updateMovie(id, movie);
     }
 
     public void deleteMovie(String id) {
-        movieRepository.deleteById(id);
+        movieDao.deleteMovie(id);
     }
 }
