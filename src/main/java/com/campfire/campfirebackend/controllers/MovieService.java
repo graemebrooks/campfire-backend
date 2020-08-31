@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class MovieService {
@@ -13,18 +14,24 @@ public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
+    @Autowired
+    private MovieDao movieDao;
+
     public List<Movie> getAllMovies() {
-        List<Movie> movies = new ArrayList<>();
-        movieRepository.findAll().forEach(movies::add);
-        return movies;
+        return movieDao.getAllMovies();
     }
 
     public Optional<Movie> getMovie(String id) {
-        return movieRepository.findById(id);
+        return Optional.ofNullable(movieDao.getMovie(id));
+    }
+
+    public String getMovieName(String id) {
+        Optional<Movie> movie = movieRepository.findById(id);
+        return movie.map(Movie::getTitle).orElse(null);
     }
 
     public void addMovie(Movie movie) {
-        movieRepository.save(movie);
+        movieDao.addMovie(movie);
     }
 
     public void updateMovie(String id, Movie movie) {
