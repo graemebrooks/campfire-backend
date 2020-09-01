@@ -1,8 +1,8 @@
-package com.campfire.campfirebackend.controllers;
+package com.campfire.campfirebackend.movie;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.UUID;
+import java.util.ArrayList;
 
 @Entity
 public class Movie {
@@ -57,4 +57,5 @@ public class Movie {
     public void setDirector(String director) {
         this.director = director;
     }
+
 }

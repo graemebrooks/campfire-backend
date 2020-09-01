@@ -1,4 +1,4 @@
-package com.campfire.campfirebackend.controllers;
+package com.campfire.campfirebackend.movie;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
