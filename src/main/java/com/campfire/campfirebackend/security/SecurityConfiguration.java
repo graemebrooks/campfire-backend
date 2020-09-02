@@ -7,8 +7,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
@@ -19,20 +18,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(jdbcTemplate.getDataSource());
+        // configure spring to use jdbc as the auth mechanism
+        auth.jdbcAuthentication().dataSource(jdbcTemplate.getDataSource())
+        .usersByUsernameQuery(
+                "SELECT email, password, enabled"
+                + "FROM user "
+                + "WHERE email = ?")
+        .authoritiesByUsernameQuery(
+                "SELECT email, authority "
+                + "FROM authorities "
+                + "WHERE email = ?"
+        );
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/api/movies/{id}/title").hasRole("USER")
-                .antMatchers("/").permitAll()
-                .and().formLogin();
+        http.csrf().ignoringAntMatchers("/api/user/registration").and().authorizeRequests()
+                .antMatchers("/api/user/registration").permitAll().and().formLogin();
     }
 
     // TODO: add hashing password encoder
     @Bean
     public PasswordEncoder getPasswordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
+
 }
