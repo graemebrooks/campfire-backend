@@ -5,7 +5,6 @@ CREATE TABLE user(
     lastName varchar(50) not null,
     enabled TINYINT NOT NULL DEFAULT 1,
     PRIMARY KEY (email)
-
 );
 
 CREATE TABLE authorities (

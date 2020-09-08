@@ -16,11 +16,18 @@ public class UserDao {
     JdbcTemplate jdbcTemplate;
 
     public void registerUser(User user) {
-        String sql = "INSERT INTO user (email, password, firstName, lastName, enabled) VALUES (?," +
+        // add user to user table
+        String userSql = "INSERT INTO user (email, password, firstName, lastName, enabled) VALUES" +
+                " (?," +
                 " " +
                 "?, ?, ?, ?)";
-        jdbcTemplate.update(sql, user.getEmail(), user.getEncodedPassword(), user.getFirstName(),
+        jdbcTemplate.update(userSql, user.getEmail(), user.getEncodedPassword(),
+                user.getFirstName(),
                 user.getLastName(), 1);
+
+        // add user to authorities table
+        String authoritiesSql = "INSERT INTO authorities (email, authority) VALUES (?, ?)";
+        jdbcTemplate.update(authoritiesSql, user.getEmail(), "ROLE_USER");
     }
 
     public List<User> getUserByEmail(String email) {
@@ -34,7 +41,7 @@ public class UserDao {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new User(rs.getString("email"), rs.getString("password"),
-                    rs.getString("firstName"), rs.getString("lastName"), rs.getString("role"));
+                    rs.getString("firstName"), rs.getString("lastName"));
         }
     }
 

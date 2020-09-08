@@ -28,7 +28,7 @@ public class UserService {
 
         // TODO password hashing not producing same results
         User user = new User(userDTO.getEmail(), encodedPassword, userDTO.getFirstName(),
-                userDTO.getLastName(), "USER");
+                userDTO.getLastName());
         userDao.registerUser(user);
     }
 

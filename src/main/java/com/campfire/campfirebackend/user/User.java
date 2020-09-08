@@ -1,19 +1,28 @@
 package com.campfire.campfirebackend.user;
 
-public class User {
+import org.springframework.security.authentication.jaas.AuthorityGranter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class User implements UserDetails {
 
     private String email;
     private String encodedPassword;
     private String firstName;
     private String lastName;
-    private String role;
+//    private String role;
 
-    public User(String email, String encodedPassword, String firstName, String lastName, String role) {
+    public User(String email, String encodedPassword, String firstName, String lastName) {
         this.email = email;
         this.encodedPassword = encodedPassword;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.role = role;
+//        this.role = role;
     }
 
     public String getEmail() {
@@ -47,12 +56,49 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+//
+//    public String getRole() {
+//        return role;
+//    }
+//
+//    public void setRole(String role) {
+//        this.role = role;
+//    }
 
-    public String getRole() {
-        return role;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        return authorities;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    @Override
+    public String getPassword() {
+        return getEncodedPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }
