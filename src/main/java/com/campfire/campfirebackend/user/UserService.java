@@ -1,5 +1,6 @@
 package com.campfire.campfirebackend.user;
 
+import com.campfire.campfirebackend.exceptions.EmailAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,18 +16,16 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void registerUser(UserDTO userDTO) {
+    public void registerUser(UserDTO userDTO) throws EmailAlreadyExistsException {
 
         // check if user with email already exists
         if (emailExists(userDTO.getEmail())) {
-            // TODO: write email exists exception
-            return;
+            throw new EmailAlreadyExistsException("Email already exists");
         }
 
         // encode password
         String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
 
-        // TODO password hashing not producing same results
         User user = new User(userDTO.getEmail(), encodedPassword, userDTO.getFirstName(),
                 userDTO.getLastName());
         userDao.registerUser(user);

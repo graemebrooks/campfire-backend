@@ -1,5 +1,8 @@
 package com.campfire.campfirebackend.security;
 
+import com.campfire.campfirebackend.UserMovie.UserMovieController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -41,7 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/api/movies/*").hasRole("USER")
-                .antMatchers("/hello").hasRole("USER")
+                .antMatchers("/api/usermovies").authenticated()
                 .antMatchers("/api/user/*").permitAll().anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

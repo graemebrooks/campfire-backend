@@ -1,5 +1,6 @@
 package com.campfire.campfirebackend.user;
 
+import com.campfire.campfirebackend.exceptions.EmailAlreadyExistsException;
 import com.campfire.campfirebackend.security.AuthenticationResponse;
 import com.campfire.campfirebackend.security.AuthenticationsRequest;
 import com.campfire.campfirebackend.security.JwtUtil;
@@ -24,9 +25,9 @@ public class UserController {
     @Autowired
     private JwtUtil jwtTokenUtil;
 
-    @CrossOrigin()
+    @CrossOrigin
     @PostMapping("/api/user/registration")
-    public void registerUser(@RequestBody UserDTO user) {
+    public void registerUser(@RequestBody UserDTO user) throws EmailAlreadyExistsException {
         userService.registerUser(user);
     }
 
@@ -56,9 +57,4 @@ public class UserController {
         return "Hello World";
     }
 
-//    @CrossOrigin()
-//    @PostMapping("/api/user/registration")
-//    public void loginUser(@RequestBody UserDTO user) {
-//        userService.registerUser(user);
-//    }
 }

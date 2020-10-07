@@ -2,6 +2,8 @@ package com.campfire.campfirebackend.security;
 
 import com.campfire.campfirebackend.user.User;
 import com.campfire.campfirebackend.user.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +26,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
 
+    final static Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -31,6 +35,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String username = null;
         String jwt = null;
+
+        logger.info(authorizationHeader);
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
@@ -41,7 +47,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             User user = this.userService.getUserByEmail(username).get();
             // if token is valid, handle auth like spring normally would
             if (jwtUtil.validateToken(jwt, user)) {
-                System.out.println("token validated");
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 System.out.println(user.getAuthorities());

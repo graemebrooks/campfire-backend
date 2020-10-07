@@ -2,7 +2,6 @@ package com.campfire.campfirebackend.movie;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.ArrayList;
 
 @Entity
 public class Movie {
@@ -13,17 +12,19 @@ public class Movie {
     private String title;
     private int year;
     private String director;
+    private String posterPath;
 
     // No arg constructor
     public Movie() {
 
     }
 
-    public Movie(String id, String title, int year, String director) {
+    public Movie(String id, String title, int year, String director, String posterPath) {
         this.id = id;
         this.title = title;
         this.year = year;
         this.director = director;
+        this.posterPath = posterPath;
     }
 
     public String getId() {
@@ -58,4 +59,11 @@ public class Movie {
         this.director = director;
     }
 
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
+    }
 }

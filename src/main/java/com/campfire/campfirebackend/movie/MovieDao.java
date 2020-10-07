@@ -27,14 +27,17 @@ public class MovieDao {
     }
 
     public void addMovie(Movie movie) {
-        String sql = "INSERT INTO movie (id, title, year, director) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO movie (id, title, year, director, posterPath) VALUES (?, ?, ?, " +
+                "?, ?)";
         jdbcTemplate.update(sql, UUID.randomUUID().toString(), movie.getTitle(), movie.getYear(),
-                movie.getDirector());
+                movie.getDirector(), movie.getPosterPath());
     }
 
     public void updateMovie(String id, Movie movie) {
-        String sql = "UPDATE movie SET title = ?, year = ?, director = ? WHERE id = ?";
-        jdbcTemplate.update(sql, movie.getTitle(), movie.getYear(), movie.getDirector(), id);
+        String sql = "UPDATE movie SET title = ?, year = ?, director = ? WHERE id = ?, posterPath" +
+                " = ?";
+        jdbcTemplate.update(sql, movie.getTitle(), movie.getYear(), movie.getDirector(), id,
+                movie.getPosterPath());
     }
 
     public void deleteMovie(String id) {

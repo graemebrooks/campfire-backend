@@ -14,3 +14,17 @@ CREATE TABLE authorities (
 );
 
 CREATE UNIQUE INDEX ix_auth_email on authorities (email,authority);
+
+CREATE TABLE usermovie(
+    id varchar(10) not null,
+    title varchar(50) not null,
+    year integer not null,
+    director varchar(50),
+    posterPath varchar(100),
+    userId varchar(50) not null,
+    hasWatched boolean not null,
+    watchListed boolean not null,
+    review text,
+    rating integer,
+    PRIMARY KEY (userId, id)
+);
